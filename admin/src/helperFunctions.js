@@ -38,4 +38,15 @@ async function getRequest (url) {
   }
 }
 
-module.exports = { findHoldingNameById, calculateInvestmentValue, createCsvRows, getRequest }
+async function postRequest (url, data) {
+  try {
+    const response = await axios.post(url, data, {
+      headers: { "Content-Type": "application/json" },
+    })
+    return response.data
+  } catch (e) {
+    console.error("Error in postRequest:", e.message)
+  }
+}
+
+module.exports = { findHoldingNameById, calculateInvestmentValue, createCsvRows, getRequest, postRequest }
