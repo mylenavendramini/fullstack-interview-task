@@ -1,9 +1,9 @@
 const express = require("express")
 const bodyParser = require("body-parser")
-const { describe, expect, test, afterAll } = require("@jest/globals")
+const { describe, expect, test, afterAll, beforeAll } = require("@jest/globals")
 const { mockCompanies, mockUserInvestment } = require("./mocks")
 const { PORT, investmentsServiceUrl, financialCompaniesUrl } = require("./env")
-const { findHoldingNameById, calculateInvestmentValue, createCsvRows, getRequest } = require("../src/helperFunctions")
+const { findHoldingNameById, calculateInvestmentValue, createCsvRows, getRequest, postRequest } = require("../src/helperFunctions")
 
 const app = express()
 app.use(bodyParser.json({ limit: "10mb" }))
@@ -126,6 +126,29 @@ describe("Admin service", () => {
         headers: { "Content-Type": "application/json" },
       })
       expect(result).toEqual(mockCompanies)
+    })
+  })
+  describe("Post request function", () => {
+    const url = `${investmentsServiceUrl} / investments /export `
+    let axiosPostMock
+    beforeAll(() => {
+      axiosPostMock = jest.spyOn(require("axios"), "post")
+      axiosPostMock.mockResolvedValue({ data: "Success" })
+    })
+    afterAll(() => {
+      axiosPostMock.mockRestore()
+    })
+    test("should send the correct data in the request", async () => {
+      const csvReportObject = createCsvRows(mockUserInvestment, mockCompanies)
+      await postRequest(url, csvReportObject)
+      expect(axiosPostMock).toHaveBeenCalledWith(url, csvReportObject, {
+        headers: { "Content-Type": "application/json" },
+      })
+    })
+    test("should resolve when request succeeds", async () => {
+      const csvReportObject = createCsvRows(mockUserInvestment, mockCompanies)
+      const result = await postRequest(url, csvReportObject)
+      expect(result).toEqual("Success")
     })
   })
 })
