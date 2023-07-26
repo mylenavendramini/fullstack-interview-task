@@ -1,3 +1,4 @@
+const axios = require("axios")
 const R = require("ramda")
 
 function findHoldingNameById (companies, holdingId) {
@@ -26,4 +27,15 @@ function createCsvRows (userInvestments, companies) {
   return { csv: headers }
 }
 
-module.exports = { findHoldingNameById, calculateInvestmentValue, createCsvRows }
+async function getRequest (url) {
+  try {
+    const response = await axios.get(url, {
+      headers: { "Content-Type": "application/json" },
+    })
+    return response.data
+  } catch (e) {
+    console.error("Error in getRequest: ", e.message)
+  }
+}
+
+module.exports = { findHoldingNameById, calculateInvestmentValue, createCsvRows, getRequest }
