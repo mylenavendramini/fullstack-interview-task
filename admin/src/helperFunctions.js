@@ -13,4 +13,17 @@ function calculateInvestmentValue (investmentTotal, investmentPercentage) {
   } return 0
 }
 
-module.exports = { findHoldingNameById, calculateInvestmentValue }
+function createCsvRows (userInvestments, companies) {
+  const headers = "|User|First Name|Last Name|Date|Holding|Value|"
+  if (userInvestments && companies && companies.length > 0) {
+    const { userId, firstName, lastName, investmentTotal, date, holdings } = userInvestments
+    const csvRows = R.concat([headers], R.map((holding) => {
+      const { id, investmentPercentage } = holding
+      return `|${userId}|${firstName}|${lastName}|${date}|${findHoldingNameById(companies, id)}|${calculateInvestmentValue(investmentTotal, investmentPercentage)}|`
+    }, holdings))
+    return { csv: R.join("\n", csvRows) }
+  }
+  return { csv: headers }
+}
+
+module.exports = { findHoldingNameById, calculateInvestmentValue, createCsvRows }
