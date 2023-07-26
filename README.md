@@ -86,7 +86,7 @@ Admin - localhost:8083
 
 - `/investments/:id` get an investment record by id
 
-### New routes
+## New routes
 
 I have addedd a new route:
 
@@ -94,7 +94,7 @@ Admin - localhost:8083
 
 - `/generate-csv-report/:id` generate a CSV report showing the values of all user investment holdings (the id is the user investment id)
 
-### Additional scripts and tests
+## Additional scripts and tests
 
 To run the entire test suite, in the Admin service, run
 
@@ -102,13 +102,16 @@ To run the entire test suite, in the Admin service, run
 npm test
 ```
 
-### Answers
+## Answers
 
-- How might you make this service more secure?
-  To make the service more secure, I can implement some security measures to protect against potential vulnerabilities and attacks. Some examples would be input validation and sanitisation; authentication and authorisation; proper error handling; CORS.
+**How might you make this service more secure?**
 
-- How would you make this solution scale to millions of records?
-  To make this solution scale to millions of records, I would use some of these strategies: indexing and query optimisation to improve query performance; caching to reduce the load on the database; optimising data transfer with pagination, for example.
+- To make the service more secure, I can implement some security measures to protect against potential vulnerabilities and attacks. Some examples would be input validation and sanitisation; authentication and authorisation; proper error handling; CORS.
 
-- What else would you have liked to improve given more time?
-  Given more time, I would improve testing coverage, including tests for the new route, enhance error handling and implement TypeScript.
+**How would you make this solution scale to millions of records?**
+
+- To make this solution scale to millions of records, I would use some of these strategies: indexing and query optimisation to improve query performance; caching to reduce the load on the database; optimising data transfer with pagination, for example.
+
+**What else would you have liked to improve given more time?**
+
+- Given more time, I would improve testing coverage, including tests for the new route, enhance error handling and implement TypeScript.
