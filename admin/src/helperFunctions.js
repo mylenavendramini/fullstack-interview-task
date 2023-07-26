@@ -7,4 +7,10 @@ function findHoldingNameById (companies, holdingId) {
   } return ""
 }
 
-module.exports = { findHoldingNameById }
+function calculateInvestmentValue (investmentTotal, investmentPercentage) {
+  if (typeof investmentTotal === "number" && typeof investmentPercentage === "number" && investmentTotal > 0 && investmentPercentage > 0) {
+    return investmentTotal * investmentPercentage
+  } return 0
+}
+
+module.exports = { findHoldingNameById, calculateInvestmentValue }
