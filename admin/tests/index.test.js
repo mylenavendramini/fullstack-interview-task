@@ -2,8 +2,8 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const { describe, expect, test, afterAll } = require("@jest/globals")
 const { mockCompanies, mockUserInvestment } = require("./mocks")
-const { findHoldingNameById, calculateInvestmentValue, createCsvRows } = require("../src/helperFunctions")
-const PORT = 8084
+const { PORT, investmentsServiceUrl, financialCompaniesUrl } = require("./env")
+const { findHoldingNameById, calculateInvestmentValue, createCsvRows, getRequest } = require("../src/helperFunctions")
 
 const app = express()
 app.use(bodyParser.json({ limit: "10mb" }))
@@ -104,6 +104,28 @@ describe("Admin service", () => {
       expect(createCsvRows(null, null)).toEqual(expected)
       expect(createCsvRows(null, [])).toEqual(expected)
       expect(createCsvRows("", null)).toEqual(expected)
+    })
+  })
+  describe("Get request function", () => {
+    test("should resolve with parsed JSON when request succeeds for investments", async () => {
+      const id = "6"
+      const url = `${investmentsServiceUrl} / investments / ${id}`
+      jest.spyOn(require("axios"), "get").mockResolvedValue({ data: [mockUserInvestment] })
+      const result = await getRequest(url)
+      expect(require("axios").get).toHaveBeenCalledWith(url, {
+        headers: { "Content-Type": "application/json" },
+      })
+      expect(result).toEqual([mockUserInvestment])
+    })
+
+    test("should resolve with parsed JSON when request succeeds for companies", async () => {
+      const url = `${financialCompaniesUrl} / companies`
+      jest.spyOn(require("axios"), "get").mockResolvedValue({ data: mockCompanies })
+      const result = await getRequest(url)
+      expect(require("axios").get).toHaveBeenCalledWith(url, {
+        headers: { "Content-Type": "application/json" },
+      })
+      expect(result).toEqual(mockCompanies)
     })
   })
 })
