@@ -28,4 +28,4 @@ const mockUserInvestment = {
   "holdings": [{ "id": "1", "investmentPercentage": 0.5 }, { "id": "2", "investmentPercentage": 0.3 }, { "id": "3", "investmentPercentage": 0.2 }],
 }
 
-module.exports = { companies, userInvestment }
+module.exports = { mockCompanies, mockUserInvestment }
