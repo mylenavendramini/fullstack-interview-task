@@ -1,23 +1,22 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const config = require("config")
-const request = require("request")
+const axios = require("axios")
 const { createCsvRows, getRequest, postRequest } = require("./helperFunctions")
 
 const app = express()
 
 app.use(bodyParser.json({ limit: "10mb" }))
 
-app.get("/investments/:id", (req, res) => {
+app.get("/investments/:id", async (req, res) => {
   const { id } = req.params
-  request.get(`${config.investmentsServiceUrl}/investments/${id}`, (e, r, investments) => {
-    if (e) {
-      console.error(e)
-      res.send(500)
-    } else {
-      res.send(investments)
-    }
-  })
+  try {
+    const response = await axios.get(`${config.investmentsServiceUrl}/investments/${id}`)
+    res.send(JSON.stringify(response.data))
+  } catch (e) {
+    console.error(e)
+    res.send(500)
+  }
 })
 
 app.get("/generate-csv-report/:id", async (req, res) => {
